@@ -1,13 +1,10 @@
 "use client";
 
 import type { NextPage } from "next";
-
-import { PoolStats } from "~~/components/example-ui/PoolStats";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
+import { PoolStats } from "~~/components/example-ui/PoolStats";
 
 const PoolAnalytics: NextPage = () => {
-  
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Page Header */}

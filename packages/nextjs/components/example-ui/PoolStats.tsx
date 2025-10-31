@@ -2,20 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
-import {  usePublicClient } from "wagmi";
-import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { usePublicClient } from "wagmi";
 import {
-  ChartBarIcon,
   ArrowTrendingUpIcon,
-  UsersIcon,
+  ChartBarIcon,
+  ClockIcon,
   CurrencyDollarIcon,
   FireIcon,
-  ClockIcon,
   InformationCircleIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
 
-interface PoolStats {
+interface PoolStatsData {
   tvl: string;
   volume24h: string;
   fees24h: string;
@@ -26,9 +26,8 @@ interface PoolStats {
 }
 
 export const PoolStats = () => {
- 
   const publicClient = usePublicClient();
-  const [stats, setStats] = useState<PoolStats>({
+  const [stats, setStats] = useState<PoolStatsData>({
     tvl: "0",
     volume24h: "0",
     fees24h: "0",
@@ -38,6 +37,7 @@ export const PoolStats = () => {
     apr: "0",
   });
   const [loading, setLoading] = useState(true);
+
   const [priceHistory, setPriceHistory] = useState<Array<{ time: number; price: number }>>([]);
 
   const { data: dexContract } = useDeployedContractInfo("SimpleDEX");
@@ -65,9 +65,7 @@ export const PoolStats = () => {
 
   // Calculate current price
   const currentPrice =
-    reserveA > 0n && reserveB > 0n
-      ? Number(formatUnits(reserveB, 6)) / Number(formatUnits(reserveA, 18))
-      : 0;
+    reserveA > 0n && reserveB > 0n ? Number(formatUnits(reserveB, 6)) / Number(formatUnits(reserveA, 18)) : 0;
 
   useEffect(() => {
     const fetchPoolStats = async () => {
@@ -314,9 +312,7 @@ export const PoolStats = () => {
           <div className="card-body">
             <p className="text-sm text-slate-400">Price Change (24h)</p>
             <div className="flex items-center gap-2 mt-2">
-              <p
-                className={`text-2xl font-bold ${stats.priceChange24h >= 0 ? "text-success" : "text-error"}`}
-              >
+              <p className={`text-2xl font-bold ${stats.priceChange24h >= 0 ? "text-success" : "text-error"}`}>
                 {stats.priceChange24h >= 0 ? "+" : ""}
                 {stats.priceChange24h.toFixed(2)}%
               </p>
@@ -423,6 +419,17 @@ export const PoolStats = () => {
             </div>
           </div>
         </div>
+        <div className="card bg-base-100 shadow-xl border border-base-300">
+          <div className="card-body">
+            <h3 className="text-xl font-bold mb-4">Price History (24h)</h3>
+
+            {priceHistory.length > 0 ? (
+              <p className="text-slate-400">**Chart data points available:** {priceHistory.length}</p>
+            ) : (
+              <p className="text-slate-400">Loading price data...</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Info Alert */}
@@ -430,7 +437,9 @@ export const PoolStats = () => {
         <InformationCircleIcon className="h-6 w-6" />
         <div>
           <h4 className="font-bold">Statistics Update</h4>
-          <p className="text-sm">Pool statistics are updated every 30 seconds based on the last 24 hours of activity.</p>
+          <p className="text-sm">
+            Pool statistics are updated every 30 seconds based on the last 24 hours of activity.
+          </p>
         </div>
       </div>
     </div>
