@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import { LiquidityPanel } from "~~/components/example-ui/LiquidityPanel";
 import { SwapPanel } from "~~/components/example-ui/SwapPanel";
 import { TransactionHistory } from "~~/components/example-ui/TransactionHistory.";
+import { MiniPoolStats } from "~~/components/example-ui/MiniPoolStats";
 
 const DEX: NextPage = () => {
   const { isConnected } = useAccount();
@@ -33,10 +34,20 @@ const DEX: NextPage = () => {
         </p>
       </div>
 
+      {/* Pool Stats Widget - Shows on all tabs */}
+      <div className="flex justify-center mb-6">
+        <div className="w-full max-w-lg">
+          <MiniPoolStats />
+        </div>
+      </div>
+
       {/* Tab Selector */}
       <div className="flex justify-center mb-6">
         <div className="tabs tabs-boxed">
-          <button className={`tab ${activeTab === "swap" ? "tab-active" : ""}`} onClick={() => setActiveTab("swap")}>
+          <button
+            className={`tab ${activeTab === "swap" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("swap")}
+          >
             💱 Swap
           </button>
           <button

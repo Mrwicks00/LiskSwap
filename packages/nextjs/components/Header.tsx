@@ -4,7 +4,13 @@ import React, { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
-import { ArrowsRightLeftIcon, Bars3Icon, BugAntIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { 
+  Bars3Icon, 
+  BugAntIcon, 
+  HomeIcon, 
+  ArrowsRightLeftIcon,
+  ChartBarIcon
+} from "@heroicons/react/24/outline";
 import {
   DappConsoleButton,
   FaucetButton,
@@ -30,6 +36,11 @@ export const menuLinks: HeaderMenuLink[] = [
     label: "DEX",
     href: "/dex",
     icon: <ArrowsRightLeftIcon className="h-4 w-4" />,
+  },
+  {
+    label: "Pool Stats",
+    href: "/pool-stats",
+    icon: <ChartBarIcon className="h-4 w-4" />,
   },
   {
     label: "Debug Contracts",
